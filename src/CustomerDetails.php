@@ -78,7 +78,7 @@
 			$arrData['BillingCity'] = $this->billingCity;
 			$arrData['BillingPostCode'] = $this->billingPostCode;
 			$arrData['BillingCountry'] = $this->billingCountry;
-			$arrData['BillingState'] = "";
+			$arrData['BillingState'] = '';
 
 			//delivery data
 			$arrData['DeliveryFirstnames'] = $this->deliveryFirstnames;
@@ -88,93 +88,113 @@
 			$arrData['DeliveryCity'] = $this->deliveryCity;
 			$arrData['DeliveryPostCode'] = $this->deliveryPostCode;
 			$arrData['DeliveryCountry'] = $this->deliveryCountry;
-			$arrData['DeliveryState'] = "";
+			$arrData['DeliveryState'] = '';
 
 			return $arrData;
 		}
 
 		public function obfuscateCardNumber() {
-			$str = "";
+			$str = '';
 			for ($i = (strlen($this->cardNumber) - 4); $i > 0; $i--)
-				$str = $str . '*';
+				$str .= '*';
 			$this->cardNumber = $str . substr($this->cardNumber, -4);
 
 			$str = '';
 			for ($i = strlen($this->cv2); $i > 0; $i--)
-				$str = $str . '*';
+				$str .= '*';
 			$this->cv2 = $str;
 		}
 
 		public function __set($name, $value) {
 			switch ($name) {
 				case 'cardHolder':
-					if (Validate::cardHolder($value))
+					$value = Sanitize::cardHolder($value);
+					if (Validate::cardHolder($value)) {
 						$this->cardHolder = $value;
+					}
 					break;
 
 				case 'cardNumber':
-					$value = str_replace(' ', '', $value); // remove spaces
-					$value = str_replace('-', '', $value); // remove dashes
-					if (Validate::cardNumber($value))
+					$value = Sanitize::digits($value);
+					if (Validate::cardNumber($value)) {
 						$this->cardNumber = $value;
+					}
 					break;
 
 				case 'cardType':
-					if (Validate::cardType($value))
+					if (Validate::cardType($value)) {
 						$this->cardType = $value;
+					}
 					break;
 
 				case 'cv2':
-					if (Validate::cv2($value, $this->cardType))
+					$value = Sanitize::digits($value);
+					if (Validate::cv2($value, $this->cardType)) {
 						$this->cv2 = $value;
+					}
 					break;
 
 				case 'expiryDate':
-					if (Validate::date($value))
+					$value = Sanitize::digits($value);
+					if (Validate::date($value)) {
 						$this->expiryDate = $value;
+					}
 					break;
 
 				case 'billingFirstnames':
 				case 'deliveryFirstnames':
 				case 'billingSurname':
 				case 'deliverySurname':
-					if (Validate::names($value))
+					$value = Sanitize::names($value);
+					if (Validate::names($value)) {
 						$this->{$name} = $value;
+					}
 					break;
 
 				case 'billingAddress1':
 				case 'deliveryAddress1':
-					if (Validate::address($value))
+					$value = Sanitize::address($value);
+					if (Validate::address($value)) {
 						$this->{$name} = $value;
+					}
 					break;
 				case 'billingAddress2':
 				case 'deliveryAddress2':
-					if (Validate::address($value, true))
+				$value = Sanitize::address($value);
+					if (Validate::address($value, true)) {
 						$this->{$name} = $value;
+					}
 					break;
 
 				case 'billingCity':
 				case 'deliveryCity':
-					if (Validate::isLengthBeetween($value, 1, 40))
+					$value = Sanitize::address($value);
+					if (Validate::city($value)) {
 						$this->{$name} = $value;
+					}
 					break;
 
 				case 'billingPostCode':
 				case 'deliveryPostCode':
-					if (Validate::postcode($value))
+					$value = Sanitize::postcode($value);
+					if (Validate::postcode($value)) {
 						$this->{$name} = $value;
+					}
 					break;
 
 				case 'billingCountry':
 				case 'deliveryCountry':
-					if (Validate::country($value))
+					if (Validate::country($value)) {
 						$this->{$name} = $value;
+					}
 					break;
 
 				case 'billingPhone':
 				case 'deliveryPhone':
-					if (Validate::phone($value))
+					$value = Sanitize::phone($value);
+					if (Validate::phone($value)) {
 						$this->{$name} = $value;
+					}
 					break;
 
 				default:
@@ -184,8 +204,9 @@
 
 		public function __get($name) {
 
-			if (isset($this->{$name}))
+			if (isset($this->{$name})) {
 				return $this->{$name};
+			}
 
 			return parent::__get($name);
 		}

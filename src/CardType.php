@@ -1,27 +1,27 @@
 <?php namespace SagePay;
 
 	abstract class CardType {
-		const Visa = 'VISA';
-		const Mc = 'MC';
-		const Delta = 'DELTA';
-		const Solo = 'SOLO';
-		const Maestro = 'MAESTRO';
-		const Uke = 'UKE'; //Visa electron
-		//const Amex = 'AMEX';
-		//const Dc = 'DC';
-		//const Jcb = 'JCB';
-		//const Laser = 'LASER';
+		const VISA = 'VISA';
+		const MC = 'MC';
+		const DELTA = 'DELTA';
+		const SOLO = 'SOLO';
+		const MAESTRO = 'MAESTRO';
+		const UKE = 'UKE'; //VISA electron
+		//const AMEX = 'AMEX';
+		//const DC = 'DC';
+		//const JCB = 'JCB';
+		//const LASER = 'LASER';
 
 		public static $arrCardTypes = array(
-			self::Visa => 'Visa',
-			self::Mc => 'Mastercard',
-			self::Delta => 'Delta',
-			self::Solo => 'Solo',
-			self::Maestro => 'Switch/Maestro',
-			self::Uke => 'Visa Electron'
-			//self::Amex => '',
-			//self::Dc => '',
-			//self::Jcb => '',
-			//self::Laser => ''
+			self::VISA => 'VISA',
+			self::MC => 'Mastercard',
+			self::DELTA => 'DELTA',
+			self::SOLO => 'SOLO',
+			self::MAESTRO => 'Switch/MAESTRO',
+			self::UKE => 'VISA Electron'
+			//self::AMEX => '',
+			//self::DC => '',
+			//self::JCB => '',
+			//self::LASER => ''
 		);
 	}

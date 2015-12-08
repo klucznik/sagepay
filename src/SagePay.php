@@ -44,22 +44,22 @@
 		 * @param string $strVendor - this should contain the SagePay vendor name supplied by SagePay when your account was created.
 		 * @param string $strMode - mode of operation (simulator, test, live)
 		 **/
-		public function __construct($strVendor, $strMode = ModeType::Simulator ) {
+		public function __construct($strVendor, $strMode = ModeType::SIMULATOR ) {
 			$sage_pay_urls = array(
-				ModeType::Live => array(
+				ModeType::LIVE => array(
 					'default' => 'https://live.sagepay.com/gateway/service/vspdirect-register.vsp',
 					'3dsecure' => 'https://live.sagepay.com/gateway/service/direct3dcallback.vsp'
 				),
-				ModeType::Test => array(
+				ModeType::TEST => array(
 					'default' => 'https://test.sagepay.com/gateway/service/vspdirect-register.vsp',
 					'3dsecure' => 'https://test.sagepay.com/gateway/service/direct3dcallback.vsp'
 				),
-				ModeType::Simulator => array(
-					'default' => 'https://test.sagepay.com/Simulator/VSPDirectGateway.asp',
-					'3dsecure' => 'https://test.sagepay.com/Simulator/VSPDirectCallback.asp'
+				ModeType::SIMULATOR => array(
+					'default' => 'https://test.sagepay.com/SIMULATOR/VSPDirectGateway.asp',
+					'3dsecure' => 'https://test.sagepay.com/SIMULATOR/VSPDirectCallback.asp'
 				)
 			);
-			$this->serverUrls = in_array($strMode, ModeType::$arrModeTypes) ? $sage_pay_urls[$strMode] : $sage_pay_urls[ModeType::Simulator];
+			$this->serverUrls = in_array($strMode, ModeType::$arrModeTypes, false) ? $sage_pay_urls[$strMode] : $sage_pay_urls[ModeType::SIMULATOR];
 
 			$this->vendor = $strVendor;
 		}
@@ -99,8 +99,9 @@
 			$arrData['Description'] = $this->description;
 			$arrData['Basket'] = $this->basket;
 
-			if ( isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] !== '::1' )
+			if ( array_key_exists('REMOTE_ADDR', $_SERVER) && $_SERVER['REMOTE_ADDR'] !== '::1' ) {
 				$arrData['ClientIPAddress'] = $_SERVER['REMOTE_ADDR'];
+			}
 
 			return $arrData;
 		}
@@ -131,6 +132,8 @@
 
 			// Send the request and convert the return value to an array
 			$response = preg_split('/$\R?^/m', curl_exec($curl_session));
+			$responseLength = count($response);
+
 
 			// Check that it actually reached the SagePay server
 			// If it didn't, set the status as FAIL and the error as the cURL error
@@ -140,14 +143,15 @@
 			}
 
 			// Close the cURL session
-			curl_close ($curl_session);
+			curl_close($curl_session);
 
 			// Turn the response into an associative array
-			for ($i=0; $i < count($response); $i++){
+
+			for ($i=0; $i < $responseLength; $i++) {
 				// Find position of first "=" character
-				$splitAt = strpos($response[$i], "=");
+				$splitAt = strpos($response[$i], '=');
 				// Create an associative array
-				$this->response[trim(substr($response[$i], 0, $splitAt))] = trim(substr($response[$i], ($splitAt+1)));
+				$this->response[trim(substr($response[$i], 0, $splitAt))] = trim(substr($response[$i], $splitAt + 1));
 			}
 
 			// obfuscate credit card number
@@ -201,28 +205,33 @@
 		public function __set($name, $value) {
 			switch ($name) {
 				case 'basket':
-					if ( Validate::isLengthBeetween($value, 0, 7500))
+					if (Helper::isLengthBetween($value, 0, 7500)) {
 						$this->basket = $value;
+					}
 					break;
 
 				case 'description':
-					if ( Validate::isLengthBeetween($value, 0, 100))
+					if (Helper::isLengthBetween($value, 0, 100)) {
 						$this->description = $value;
+					}
 					break;
 
 				case 'vendorTxCode':
-					if ( Validate::isLengthBeetween($value, 1, 20))
+					if (Helper::isLengthBetween($value, 1, 20)) {
 						$this->vendorTxCode = $this->vendor . '.' . $value . '.' . @date('Y-m-d_H-i-s');
+					}
 					break;
 
 				case 'amount':
-					if (is_numeric($value) === true && $value >= 0.01 && $value <= 10000 )
+					if (is_numeric($value) === true && $value >= 0.01 && $value <= 10000 ) {
 						$this->amount = number_format($value, 2, '.', '');
+					}
 					break;
 
 				case 'customerDetails':
-					if ( $value instanceof CustomerDetails )
+					if ( $value instanceof CustomerDetails ) {
 						$this->customerDetails = $value;
+					}
 					break;
 
 				default:
@@ -233,21 +242,18 @@
 		public function __get($name) {
 			switch ($name) {
 				case 'basket': return $this->basket;
-
 				case 'description': return $this->description;
-
 				case 'vendorTxCode': return $this->vendorTxCode;
-
 				case 'amount': return $this->amount;
-
 				case 'customerDetails': return $this->customerDetails;
 
 				case 'status': return $this->status;
 				case 'error': return $this->error;
 
 				default:
-					if ( isset($this->$name) )
+					if ( isset($this->$name) ) {
 						return $this->$name;
+					}
 
 					return parent::__get($name);
 			}

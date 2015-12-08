@@ -4,91 +4,101 @@
 
 	abstract class Validate {
 
-		public static function isLengthBeetween($string, $minimumLength, $maximumLength) {
-			$stringLength = strlen($string);
-			if (($stringLength < $minimumLength) || ($stringLength > $maximumLength))
-				return false;
-			else
-				return true;
-		}
+		const CARD_HOLDER_MAX_LENGTH = 50;
+		const CARD_NUMBER_MAX_LENGTH = 20;
+		const NAMES_MAX_LENGTH = 20;
+		const ADDRESS_MAX_LENGTH = 100;
+		const CITY_MAX_LENGTH = 40;
+		const POSTCODE_MAX_LENGTH = 10;
+		const PHONE_MAX_LENGTH = 20;
 
 		public static function cardHolder($string) {
-			if ( self::isLengthBeetween($string, 1, 50) === false )
+			if ( Helper::isLengthBetween($string, 1, self::CARD_HOLDER_MAX_LENGTH) === false ) {
 				return false;
+			}
 
-			return (boolean)preg_match('%^([[:alpha:]\-&.\' \\\\/]+)$%', $string);
+			return ($string === Sanitize::cardHolder($string));
 		}
 
 		public static function cardNumber($string) {
-			if ( self::isLengthBeetween($string, 1, 20) === false )
+			if ( Helper::isLengthBetween($string, 1, self::CARD_NUMBER_MAX_LENGTH) === false ) {
 				return false;
+			}
 
-			return preg_match('/^(\d+)$/', $string);
+			return ($string === Sanitize::digits($string));
 		}
 
 		public static function cardType($string) {
-			return in_array($string, array_flip(CardType::$arrCardTypes) );
+			return in_array($string, array_flip(CardType::$arrCardTypes), false );
 		}
 
 		public static function issueNumber($string) {
-			if ( self::isLengthBeetween($string, 0, 2) === false )
+			if ( Helper::isLengthBetween($string, 0, 2) === false ) {
 				return false;
+			}
 
-			return preg_match('/^(\d+)$/', $string);
+			return ($string === Sanitize::digits($string));
 		}
 
 		public static function cv2($string, $cardType) {
-			//if ( self::isLengthBeetween($string, 0, ($strCardType == cardType::Amex) ? 4 : 3) == false )
-			if ( self::isLengthBeetween($string, 0, 3) === false )
+			//if ( self::isLengthBetween($string, 0, ($strCardType == cardType::Amex) ? 4 : 3) == false )
+			if ( Helper::isLengthBetween($string, 0, 3) === false ) {
 				return false;
+			}
 
-			return preg_match('/^(\d+)$/', $string);
+			return ($string === Sanitize::digits($string));
 		}
 
 		public static function date($string, $optional = false) {
-			if ( self::isLengthBeetween($string, ($optional) ? 0 : 4, 4) === false )
+			if ( Helper::isLengthBetween($string, $optional ? 0 : 4, 4) === false ) {
 				return false;
+			}
 
 			return preg_match('/^(\d+)$/', $string);
 		}
 
 		public static function names($string) {
-			if ( self::isLengthBeetween($string, 1, 20) === false )
+			if ( Helper::isLengthBetween($string, 1, self::NAMES_MAX_LENGTH) === false ) {
 				return false;
+			}
 
 			$string = str_replace(';', ',', $string);
 
-			return preg_match('%^([[:alnum:]\-\&\,.\\\' \\\\ /]+)$%', $string);
+			return ($string === Sanitize::names($string));
 		}
 
 		public static function address($string, $blnOptional = false) {
-			if ( self::isLengthBeetween($string, ($blnOptional) ? 0 : 1, 100) === false )
+			if ( Helper::isLengthBetween($string, $blnOptional ? 0 : 1, self::ADDRESS_MAX_LENGTH) === false ) {
 				return false;
+			}
 
 			$string = str_replace(';', ',', $string);
 
-			return preg_match('%^([[:alnum:]\-\&\,.\\\' \\\\ / \:\+\()]+)$%', $string);
+			return ($string === Sanitize::address($string));
 		}
 
 		public static function city($string) {
-			if ( self::isLengthBeetween($string, 1, 40) === false )
+			if ( Helper::isLengthBetween($string, 1, self::CITY_MAX_LENGTH) === false ) {
 				return false;
+			}
 
-			return preg_match('%^([[:alnum:]\-\&\,.\\\' \\\\ / \:\+\()]+)$%', $string);
+			return ($string === Sanitize::address($string));
 		}
 
 		public static function phone($string) {
-			if ( self::isLengthBeetween($string, 0, 20) === false )
+			if ( Helper::isLengthBetween($string, 0, self::PHONE_MAX_LENGTH) === false ) {
 				return false;
+			}
 
-			return preg_match('/^([[:alnum:] \()\+\-]+)$/', $string);
+			return ($string === Sanitize::phone($string));
 		}
 
 		public static function postcode($string) {
-			if ( self::isLengthBeetween($string, 1, 10) === false )
+			if ( Helper::isLengthBetween($string, 1, self::POSTCODE_MAX_LENGTH) === false ) {
 				return false;
+			}
 
-			return preg_match('/^([a-zA-Z0-9 -]+)$/', $string);
+			return ($string === Sanitize::postcode($string));
 		}
 
 		public static function country($string) {

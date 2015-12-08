@@ -12,7 +12,7 @@
 			$this->customerData->cardHolder = 'Adam Test & Co.-\'';
 			$this->customerData->cardNumber = ' 4929000000006';
 			$this->customerData->expiryDate = '0112';
-			$this->customerData->cardType = \SagePay\CardType::Visa;
+			$this->customerData->cardType = \SagePay\CardType::VISA;
 			$this->customerData->cv2 = '123';
 
 			$this->customerData->billingFirstnames = 'Adam';
@@ -59,7 +59,7 @@
 		}
 
 		public function testCardHolder() {
-			$this->assertTrue(Validate::cardHolder('O\'malley'));
+			$this->assertTrue(Validate::cardHolder("O'malley"));
 			$this->assertTrue(Validate::cardHolder('fdfgasd & co'));
 			$this->assertTrue(Validate::cardHolder('fsdad - fdsaf'));
 			$this->assertTrue(Validate::cardHolder('fdfads. fdsfads'));

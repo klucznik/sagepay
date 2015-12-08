@@ -13,7 +13,7 @@
 			$this->customerData->cardHolder = 'Adam Test & Co.-\'';
 			$this->customerData->cardNumber = ' 4929000000006';
 			$this->customerData->expiryDate = '0112';
-			$this->customerData->cardType = \SagePay\CardType::Visa;
+			$this->customerData->cardType = \SagePay\CardType::VISA;
 			$this->customerData->cv2 = '123';
 
 			$this->customerData->billingFirstnames = 'Adam';
@@ -34,11 +34,11 @@
 			$this->customerData->deliveryPostCode = '412';
 			$this->customerData->deliveryPhone = '';
 
-			$this->sagepay = new \SagePay\SagePay('megrivers', \SagePay\ModeType::Test);
+			$this->sagepay = new \SagePay\SagePay('megrivers', \SagePay\ModeType::TEST);
 			$this->sagepay->customerDetails = $this->customerData;
 			$this->sagepay->amount = 2.33;
 			$this->sagepay->vendorTxCode = 1;
-			$this->sagepay->description = "test order";
+			$this->sagepay->description = 'test order';
 		}
 
 		protected function onNotSuccessfulTest($e) {

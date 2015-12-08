@@ -25,8 +25,7 @@
 		 * Constructor method
 		 * Sets the $this->env property, assigns the necessary urls,
 		 * sets and formats the data to pass to 3D Secure
-		 * @return void
-		 * @param arr $data - the data provided by the user (billing, price and card)
+		 * @param array $data - the data provided by the user (billing, price and card)
 		 **/
 		public function __construct($data) {
 			$this->data = $data;
@@ -44,7 +43,7 @@
 		 * @return void
 		 **/
 		private function setUrls() {
-			$this->url = ($this->env == 'DEVELOPMENT') ? 'https://test.sagepay.com/gateway/service/direct3dcallback.vsp' : 'https://live.sagepay.com/gateway/service/direct3dcallback.vsp';
+			$this->url = ($this->env === 'DEVELOPMENT') ? 'https://test.sagepay.com/gateway/service/direct3dcallback.vsp' : 'https://live.sagepay.com/gateway/service/direct3dcallback.vsp';
 		}
 
 
@@ -159,7 +158,7 @@
 			}
 
 			// set error sessions if the request failed or was declined to be handled by controller
-			if($this->status != 'success') {
+			if($this->status !== 'success') {
 				$_SESSION['error']['status'] = $this->status;
 				$_SESSION['error']['description'] = $this->error;
 			}

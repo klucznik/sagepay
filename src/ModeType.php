@@ -1,13 +1,13 @@
 <?php namespace SagePay;
 
 	abstract class ModeType {
-		const Live = 'live';
-		const Test = 'test';
-		const Simulator = 'simulator';
+		const LIVE = 'live';
+		const TEST = 'test';
+		const SIMULATOR = 'simulator';
 
 		public static $arrModeTypes = array(
-			self::Live,
-			self::Test,
-			self::Simulator
+			self::LIVE,
+			self::TEST,
+			self::SIMULATOR
 		);
 	}
