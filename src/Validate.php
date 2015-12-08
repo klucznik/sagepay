@@ -58,7 +58,7 @@
 
 			$string = str_replace(';', ',', $string);
 
-			return preg_match('%^([[:alnum:]\-&,.\' \\\\/]+)$%', $string);
+			return preg_match('%^([[:alnum:]\-\&\,.\\\' \\\\ /]+)$%', $string);
 		}
 
 		public static function address($string, $blnOptional = false) {
@@ -67,28 +67,28 @@
 
 			$string = str_replace(';', ',', $string);
 
-			return preg_match('/^([[:alnum:]&,.\' ()+:\-]+)$/', $string);
+			return preg_match('%^([[:alnum:]\-\&\,.\\\' \\\\ / \:\+\()]+)$%', $string);
 		}
 
 		public static function city($string) {
 			if ( self::isLengthBeetween($string, 1, 40) === false )
 				return false;
 
-			return preg_match('/^([[:alnum:]&,.\' ()+:\-]+)$/', $string);
+			return preg_match('%^([[:alnum:]\-\&\,.\\\' \\\\ / \:\+\()]+)$%', $string);
 		}
 
 		public static function phone($string) {
 			if ( self::isLengthBeetween($string, 0, 20) === false )
 				return false;
 
-			return preg_match('/^([[:alnum:]&,.\' ()+:\-]+)$/', $string);
+			return preg_match('/^([[:alnum:] \()\+\-]+)$/', $string);
 		}
 
 		public static function postcode($string) {
 			if ( self::isLengthBeetween($string, 1, 10) === false )
 				return false;
 
-			return preg_match('/^([\w \-]+)$/', $string);
+			return preg_match('/^([a-zA-Z0-9 -]+)$/', $string);
 		}
 
 		public static function country($string) {
