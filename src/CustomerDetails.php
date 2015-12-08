@@ -108,14 +108,15 @@
 		public function __set($name, $value) {
 			switch ($name) {
 				case 'cardHolder':
-					$value = Sanitize::cardHolder($value);
+					$value = Helper::shorten( Sanitize::cardHolder($value), Validate::CARD_HOLDER_MAX_LENGTH );
+
 					if (Validate::cardHolder($value)) {
 						$this->cardHolder = $value;
 					}
 					break;
 
 				case 'cardNumber':
-					$value = Sanitize::digits($value);
+					$value = Helper::shorten( Sanitize::digits($value), Validate::CARD_NUMBER_MAX_LENGTH );
 					if (Validate::cardNumber($value)) {
 						$this->cardNumber = $value;
 					}
@@ -145,7 +146,7 @@
 				case 'deliveryFirstnames':
 				case 'billingSurname':
 				case 'deliverySurname':
-					$value = Sanitize::names($value);
+					$value = Helper::shorten( Sanitize::names($value), Validate::NAMES_MAX_LENGTH );
 					if (Validate::names($value)) {
 						$this->{$name} = $value;
 					}
@@ -153,14 +154,14 @@
 
 				case 'billingAddress1':
 				case 'deliveryAddress1':
-					$value = Sanitize::address($value);
+					$value = Helper::shorten( Sanitize::address($value), Validate::ADDRESS_MAX_LENGTH );
 					if (Validate::address($value)) {
 						$this->{$name} = $value;
 					}
 					break;
 				case 'billingAddress2':
 				case 'deliveryAddress2':
-				$value = Sanitize::address($value);
+					$value = Helper::shorten( Sanitize::address($value), Validate::ADDRESS_MAX_LENGTH );
 					if (Validate::address($value, true)) {
 						$this->{$name} = $value;
 					}
@@ -168,7 +169,7 @@
 
 				case 'billingCity':
 				case 'deliveryCity':
-					$value = Sanitize::address($value);
+					$value = Helper::shorten( Sanitize::address($value), Validate::CITY_MAX_LENGTH );
 					if (Validate::city($value)) {
 						$this->{$name} = $value;
 					}
@@ -176,7 +177,7 @@
 
 				case 'billingPostCode':
 				case 'deliveryPostCode':
-					$value = Sanitize::postcode($value);
+					$value = Helper::shorten( Sanitize::postcode($value), Validate::POSTCODE_MAX_LENGTH );
 					if (Validate::postcode($value)) {
 						$this->{$name} = $value;
 					}
@@ -191,7 +192,7 @@
 
 				case 'billingPhone':
 				case 'deliveryPhone':
-					$value = Sanitize::phone($value);
+					$value = Helper::shorten( Sanitize::phone($value), Validate::PHONE_MAX_LENGTH );
 					if (Validate::phone($value)) {
 						$this->{$name} = $value;
 					}
