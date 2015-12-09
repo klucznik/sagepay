@@ -14,8 +14,9 @@
 		public static function shorten($string, $maximumLength) {
 			$length = mb_strlen($string);
 
-			if ($length <= $maximumLength)
+			if ($length <= $maximumLength) {
 				return $string;
+			}
 
 			return mb_substr($string, 0, $maximumLength);
 		}

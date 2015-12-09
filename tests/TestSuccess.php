@@ -7,7 +7,7 @@
 			$this->sagepay->customerDetails = $this->customerData;
 			$this->sagepay->execute();
 
-			$this->assertEquals(\SagePay\StatusType::Ok, $this->sagepay->status);
+			$this->assertEquals(\SagePay\StatusType::OK, $this->sagepay->status);
 			$this->assertEquals('', $this->sagepay->error);
 		}
 	}

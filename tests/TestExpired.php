@@ -5,7 +5,7 @@
 		public function testExpiredCard() {
 			$this->sagepay->execute();
 
-			$this->assertEquals(\SagePay\StatusType::Invalid, $this->sagepay->status);
+			$this->assertEquals(\SagePay\StatusType::INVALID, $this->sagepay->status);
 			$this->assertEquals('5013 : The card has expired.', $this->sagepay->error);
 		}
 	}

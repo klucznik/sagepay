@@ -138,7 +138,7 @@
 			// Check that it actually reached the SagePay server
 			// If it didn't, set the status as FAIL and the error as the cURL error
 			if (curl_error($curl_session)) {
-				$this->status = StatusType::Error;
+				$this->status = StatusType::ERROR;
 				$this->error = curl_error($curl_session);
 			}
 
@@ -160,43 +160,43 @@
 			// Return values. Assign stuff based on the return 'Status' value from SagePay
 
 			switch($this->response['Status']) {
-				case StatusType::Ok:
+				case StatusType::OK:
 					// Transaction made successfully
-					$this->status = StatusType::Ok;
+					$this->status = StatusType::OK;
 					$_SESSION['transaction']['VPSTxId'] = $this->response['VPSTxId']; // assign the VPSTxId to a session variable for storing if need be
 					$_SESSION['transaction']['TxAuthNo'] = $this->response['TxAuthNo']; // assign the TxAuthNo to a session variable for storing if need be
 					break;
 
-				case StatusType::ThreeDStart:
+				case StatusType::THREEDSTART:
 					// Transaction required 3D Secure authentication
 					// The request will return two parameters that need to be passed with the 3D Secure
 					$this->acsurl = $this->response['ACSURL']; // the url to request for 3D Secure
 					$this->pareq = $this->response['PAReq']; // param to pass to 3D Secure
 					$this->md = $this->response['MD']; // param to pass to 3D Secure
-					$this->status = StatusType::ThreeDStart; // set $this->status to '3dAuth' so your controller knows how to handle it
+					$this->status = StatusType::THREEDSTART; // set $this->status to '3dAuth' so your controller knows how to handle it
 					break;
 
-				case StatusType::Rejected:
+				case StatusType::REJECTED:
 					// errors for if the card is declined
-					$this->status = StatusType::Rejected;
+					$this->status = StatusType::REJECTED;
 					$this->error = $this->response['StatusDetail'];
 					break;
 
-				case StatusType::NotAuthed:
+				case StatusType::NOTAUTHED:
 					// errors for if their card doesn't authenticate
-					$this->status = StatusType::NotAuthed;
+					$this->status = StatusType::NOTAUTHED;
 					$this->error = $this->response['StatusDetail'];
 					break;
 
-				case StatusType::Invalid:
+				case StatusType::INVALID:
 					// errors for if the user provides incorrect card data
-					$this->status = StatusType::Invalid;
+					$this->status = StatusType::INVALID;
 					$this->error = $this->response['StatusDetail'];
 					break;
 
 				default:
 					// default error if none of the above conditions are met
-					$this->status = StatusType::Error;
+					$this->status = StatusType::ERROR;
 					$this->error = $this->response['StatusDetail'];
 					break;
 			}
