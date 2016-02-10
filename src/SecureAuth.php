@@ -30,7 +30,7 @@
 		public function __construct($data) {
 			$this->data = $data;
 
-			$this->env = ENV;
+			$this->env = $_ENV;
 			$this->setUrls();
 			$this->formatData();
 			$this->execute();

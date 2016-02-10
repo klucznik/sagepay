@@ -40,8 +40,11 @@
 			return ($string === Sanitize::digits($string));
 		}
 
-		public static function cv2($string, $cardType) {
-			//if ( self::isLengthBetween($string, 0, ($strCardType == cardType::Amex) ? 4 : 3) == false )
+		public static function cv2($string, $cardType = null) {
+			if ( $cardType !== null && $cardType == CardType::AMEX && Helper::isLengthBetween($string, 0, 4) === false) {
+				return false;
+			}
+
 			if ( Helper::isLengthBetween($string, 0, 3) === false ) {
 				return false;
 			}
