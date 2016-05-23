@@ -72,8 +72,8 @@
 		 * @return string
 		 **/
 		private function formatData($arr) {
-			$arrToReturn = array();
-			foreach($arr as $key => $value){
+			$arrToReturn = [];
+			foreach($arr as $key => $value) {
 				// assign as an item of $arr (field=value)
 				$arrToReturn[] = $key . '='. urlencode($value);
 			}
@@ -83,7 +83,7 @@
 		}
 
 		private function prepareData() {
-			$arrData = array();
+			$arrData = [];
 
 			// Add Payment Type
 			$arrData['VPSProtocol'] = self::PROTOCOL_VERSION;

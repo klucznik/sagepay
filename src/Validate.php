@@ -11,6 +11,7 @@
 		const CITY_MAX_LENGTH = 40;
 		const POSTCODE_MAX_LENGTH = 10;
 		const PHONE_MAX_LENGTH = 20;
+		const STATE_MAX_LENGTH = 2;
 
 		public static function cardHolder($string) {
 			if ( Helper::isLengthBetween($string, 1, self::CARD_HOLDER_MAX_LENGTH) === false ) {
