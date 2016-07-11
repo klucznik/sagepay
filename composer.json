@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "require": {
     "php": ">=5.4",
-    "alcohol/iso3166": "^3.0",
+    "league/iso3166": "^1.0",
     "alcohol/iso4217": "^3.0"
   },
   "require-dev": {

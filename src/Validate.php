@@ -1,6 +1,6 @@
 <?php namespace SagePay;
 
-use \Alcohol\ISO3166;
+use \League\ISO3166\ISO3166;
 
 abstract class Validate {
 
