@@ -42,7 +42,7 @@ abstract class Validate {
 	}
 
 	public static function cv2($string, $cardType = null) {
-		if ( $cardType !== null && $cardType == CardType::AMEX && Helper::isLengthBetween($string, 0, 4) === false) {
+		if ( $cardType !== null && $cardType === CardType::AMEX && Helper::isLengthBetween($string, 0, 4) === false) {
 			return false;
 		}
 
